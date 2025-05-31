@@ -17,7 +17,7 @@ class Listing(models.Model):
         validators=[MinValueValidator(0)]
     )
     location = models.CharField(max_length=200)
-    amenities = models.JSONField(default=list)  # e.g., ["Wifi", "Pool"]
+    amenities = models.JSONField(default=list)
     is_available = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
