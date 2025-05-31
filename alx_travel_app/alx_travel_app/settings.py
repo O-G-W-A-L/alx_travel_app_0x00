@@ -8,13 +8,12 @@ from pathlib import Path
 import os
 import environ
 
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
 # Initialize environ
 env = environ.Env()
-environ.Env.read_env()
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -35,6 +34,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'drf_yasg',
+    'listings',  # Changed from 'alx_travel_app.listings'
 ]
 
 MIDDLEWARE = [
@@ -48,25 +48,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'alx_travel_app.urls'
-
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
-
-WSGI_APPLICATION = 'alx_travel_app.wsgi.application'
+# Update these path configurations
+ROOT_URLCONF = 'alx_travel_app.alx_travel_app.urls'
+WSGI_APPLICATION = 'alx_travel_app.alx_travel_app.wsgi.application'
 
 
 # Database
@@ -75,11 +59,7 @@ WSGI_APPLICATION = 'alx_travel_app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': env ('alxtravel'),
-        'USER': env ('travel_user'),
-        'PASSWORD': env ('travel_password'),
-        'HOST': env ('DB_Host'),
-        'PORT': env ('DB_Port', default='3306'),
+        'NAME': BASE_DIR / 'db.sqlite3',  # Simplified for development
     }
 }
 
@@ -116,7 +96,10 @@ REST_FRAMEWORK = {
 }
 
 # CORS Configuration
-CORS_ALLOWED_ORIGINS= True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+]
 
 # Swagger configuration (drf-yasg)
 SWAGGER_SETTINGS = {
