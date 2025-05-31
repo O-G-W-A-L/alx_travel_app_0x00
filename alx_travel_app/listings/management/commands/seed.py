@@ -41,7 +41,7 @@ class Command(BaseCommand):
                 amenities=random.sample(["Wifi", "Pool", "Kitchen", "Parking", "TV"], k=random.randint(1, 3))
             ))
         Listing.objects.bulk_create(listings)
-        listings = Listing.objects.all()  # Re-fetch to get IDs
+        listings = Listing.objects.all()
 
         # Create Bookings
         bookings = []
