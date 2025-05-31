@@ -1,7 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+
 class User(AbstractUser):
+    # Extend this class in the future for roles, profiles, etc.
     pass
 
 
@@ -14,27 +16,42 @@ class Listing(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "Listing"
+        verbose_name_plural = "Listings"
+
     def __str__(self):
         return self.title
 
+
 class Booking(models.Model):
-    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='listing_bookings')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_bookings')  
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='bookings')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bookings')
     start_date = models.DateField()
     end_date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['-created_at']
+        unique_together = ('listing', 'user', 'start_date')
+
     def __str__(self):
-        return f"Booking for {self.listing.title} by {self.user}"
+        return f"{self.user.username} → {self.listing.title} ({self.start_date} to {self.end_date})"
+
 
 class Review(models.Model):
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='reviews')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
-    rating = models.PositiveIntegerField()
+    rating = models.PositiveSmallIntegerField()
     comment = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['-created_at']
+        unique_together = ('listing', 'user')
+
     def __str__(self):
-        return f"Review for {self.listing.title} by {self.user}"
+        return f"{self.user.username} rated {self.listing.title} - {self.rating}/5"
