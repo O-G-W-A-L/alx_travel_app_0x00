@@ -3,7 +3,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.conf import settings
 
 class Listing(models.Model):
-    """Property listing (e.g., Airbnb-style rental)"""
+    """Property listing"""
     host = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -82,7 +82,7 @@ class Review(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ['listing', 'reviewer']  # Prevent duplicate reviews
+        unique_together = ['listing', 'reviewer']
         indexes = [
             models.Index(fields=['listing']),
             models.Index(fields=['rating']),
