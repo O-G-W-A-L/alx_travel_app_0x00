@@ -1,38 +1,50 @@
-# alx_travel_app
+# Travel App Backend API
 
-A Django‑based travel listings API with MySQL, Swagger docs, CORS support, and Celery integration.
+## Technical Overview
 
-## Features
-- REST API using Django REST Framework  
-- MySQL backend (configured via environment variables)  
-- Interactive API docs at `/swagger/` (drf‑yasg)  
-- Cross‑origin support with django‑cors‑headers  
-- Async task queue with Celery & RabbitMQ  
+### Core Components
+- **Models**  
+  - `Listing`: Property listings with pricing, location, amenities (PostgreSQL JSON field)
+  - `Booking`: Reservation system with date validation constraints  
+  - `Review`: Rating system with 1-5 star validation
 
-## Quick Start
+### Tech Stack
+- Django 4.2 + Django REST Framework  
+- PostgreSQL (production) / SQLite (development)  
+- Redis (for caching in production)  
 
-1. **Clone & enter repo**  
-   ```bash
-   git clone https://github.com/<your-user>/alx_travel_app.git
-   cd alx_travel_app
-   ```
-    Install dependencies
- ```bash
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
- ```
-Migrate & run
+## Setup
+
 ```bash
-    python manage.py migrate
-    python manage.py runserver
+# 1. Initialize database
+python manage.py migrate
 
-    Explore API docs
-    Open your browser at http://localhost:8000/swagger/
+# 2. Seed test data (creates 10 listings, 20 bookings, 15 reviews)
+python manage.py seed --test
+
+# 3. Run development server
+python manage.py runserver
 ```
-Running Celery
+API Endpoints
+Endpoint	Method	Auth Required	Description
+/api/listings/	GET	No	Paginated listings (100/page)
+/api/listings/{id}/	GET	No	Detailed listing view
+/api/bookings/	POST	JWT	Create new booking
+Testing
 ```bash
-Start a Celery worker for background tasks:
 
-celery -A alx_travel_app worker --loglevel=info
+# Run all tests with coverage
+pytest --cov=listings --cov-report=html
+
+# Specific test type
+pytest listings/tests/unit/test_models.py -v
+```
+Production Notes
+
+    Environment Variables required:
+    ```
+
+    DJANGO_SECRET_KEY=your-secret-key
+    DATABASE_URL=postgres://user:pass@host:port/db
+    REDIS_URL=redis://cache:6379/0
 ```

@@ -13,7 +13,7 @@ A Django‑based travel listings API with MySQL, Swagger docs, CORS support, and
 
 1. **Clone & enter repo**  
    ```bash
-   git clone https://github.com/<your-user>/alx_travel_app.git
+   https://github.com/O-G-W-A-L/alx_travel_app_0x00.git
    cd alx_travel_app
    ```
     Install dependencies
