@@ -8,13 +8,25 @@
   - `Booking`: Reservation system with date validation constraints  
   - `Review`: Rating system with 1-5 star validation
 
-### Tech Stack
-- Django 4.2 + Django REST Framework  
-- PostgreSQL (production) / SQLite (development)  
-- Redis (for caching in production)  
-
 ## Setup
-
+### Project Structure
+```
+alx_travel_app_0x00/
+├── alx_travel_app/
+│   ├── settings.py
+│   └── ...
+├── listings/
+│   ├── models.py
+│   ├── serializers.py
+│   ├── management/
+│   │   ├── __init__.py
+│   │   └── commands/
+│   │       ├── __init__.py
+│   │       └── seed.py
+│   └── ...
+└── manage.py
+```
+### setup
 ```bash
 # 1. Initialize database
 python manage.py migrate
@@ -42,9 +54,8 @@ pytest listings/tests/unit/test_models.py -v
 Production Notes
 
     Environment Variables required:
-    ```
+    
 
     DJANGO_SECRET_KEY=your-secret-key
     DATABASE_URL=postgres://user:pass@host:port/db
     REDIS_URL=redis://cache:6379/0
-```
